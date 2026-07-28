@@ -1,0 +1,21 @@
+// Global styles, loaded once via main.tsx, before App even renders.
+// Deliberately minimal: just enough to reset the browser's own defaults
+// so App.scss's own rules (background, spacing, etc.) aren't fighting
+// leftover demo styling from the default Vite scaffold (dark background,
+// centered flex body, custom button/link colors) — none of that is
+// relevant to this project.
+ 
+* {
+  box-sizing: border-box;
+}
+ 
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+ 
+body {
+  min-height: 100vh;
+}
+ 

@@ -1,0 +1,87 @@
+@use '../styles/variables' as vars;
+
+.run-history {
+  &__error,
+  &__archive-error {
+    color: vars.$color-error;
+    background: vars.$color-error-background;
+    border-radius: vars.$radius;
+    padding: vars.$spacing-sm;
+  }
+
+  &__empty {
+    color: vars.$color-text-muted;
+    font-style: italic;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: vars.$spacing-sm;
+  }
+
+  &__list-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: vars.$spacing-sm;
+    padding: vars.$spacing-sm;
+    border: 1px solid vars.$color-border;
+    border-radius: vars.$radius;
+  }
+
+  &__seed {
+    font-weight: 600;
+  }
+
+  &__status {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: vars.$color-blue;
+    background: rgba(42, 117, 187, 0.1);
+    border-radius: vars.$radius;
+    padding: 2px vars.$spacing-sm;
+  }
+
+  &__resume,
+  &__view-archive,
+  &__delete-archive {
+    padding: vars.$spacing-xs vars.$spacing-sm;
+    border: 1px solid vars.$color-border;
+    border-radius: vars.$radius;
+    background: vars.$color-surface;
+    cursor: pointer;
+    font-size: 0.85rem;
+
+    &:hover {
+      border-color: vars.$color-blue;
+    }
+  }
+
+  &__delete-archive {
+    color: vars.$color-red;
+
+    &:hover {
+      border-color: vars.$color-red;
+    }
+  }
+
+  &__archive-deleted {
+    color: vars.$color-text-muted;
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  &__archive-content {
+    margin-top: vars.$spacing-md;
+    padding: vars.$spacing-md;
+    background: vars.$color-text;
+    color: vars.$color-yellow;
+    border-radius: vars.$radius;
+    overflow-x: auto;
+    font-size: 0.8rem;
+  }
+}

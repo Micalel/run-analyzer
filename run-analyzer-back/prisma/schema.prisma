@@ -1,0 +1,141 @@
+// This schema describes the app's own database, separate from the
+// randomizer log parser. `randomizer-log-parser.ts` produces a
+// `ParsedRandomizerLog` object; this file defines where that data (and the
+// data tracked live while playing) actually gets stored.
+//
+// Core design principle, carried over from the project's original spec:
+//   "live" data (Encounter, InventoryItem) reflects only what the player
+//    has actually observed in-game, safe to show on a live/public dashboard
+//    while a run is still in progress.
+//   "archive" data (RunArchive) is the full spoiler-heavy randomizer log,
+//    only unlocked once a run has ended, and independently deletable
+//    without losing the run's lightweight stats.
+
+// Prisma ORM v7: the new Rust-free "prisma-client" provider, generated to
+// an explicit folder (v7 no longer generates into node_modules by
+// default). See db.ts for how the generated client is actually imported
+// and instantiated (with a driver adapter, per v7's new requirements).
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+// Note: `url` used to live here, but Prisma ORM v7 removed support for it
+// in schema files. The connection string now lives in two places instead:
+//   prisma.config.ts, read by the Prisma CLI (migrate, studio, etc.)
+//   db.ts, passed to the driver adapter used by the running app
+datasource db {
+  provider = "postgresql"
+}
+
+enum RunStatus {
+  ACTIVE // currently being played
+  ENDED // finished (death, victory, or manually stopped)
+}
+
+/// How a species was first encountered. WILD and TRAINER map directly to
+/// what the real Ironmon-Tracker Lua script already computes on every
+/// battle (BattleHandler.lua's `isWildBattle()`, based on whether the
+/// battle's `enemyTrainerID` is 0), a future automated bridge could fill
+/// this in with no extra detection work. STATIC and TRADE aren't detected
+/// live by the tracker today; for now they'd come from manual entry.
+enum EncounterContext {
+  WILD
+  TRAINER
+  STATIC
+  TRADE
+}
+
+/// One Ironmon attempt: one randomizer seed, from the moment it's loaded
+/// until the run ends. This is the lightweight record that's always kept,
+/// even if the full archive is deleted later, it's what powers the
+/// cross-run performance dashboard (best starter, average survival time,
+/// most common cause of death, etc.).
+model Run {
+  id                String    @id @default(cuid())
+  seed              String
+  randomizerVersion String
+  /// e.g. "Pokemon Platinum", filled in manually, or later parsed from the
+  /// ROM Diagnostics section if you decide to capture it.
+  gameName          String?
+  /// Denormalized from the parsed log's `starters`: kept directly on Run so
+  /// stats queries ("best starter across all runs") don't need to touch the
+  /// archive at all, even when it still exists.
+  starterSpecies    String?
+  status            RunStatus @default(ACTIVE)
+  startedAt         DateTime  @default(now())
+  endedAt           DateTime?
+  /// Freeform for now (e.g. "death", "manual stop"). Can become an enum
+  /// later once you know the actual set of values you want to track.
+  causeOfEnd        String?
+
+  encounters     Encounter[]
+  inventoryItems InventoryItem[]
+  /// Optional on purpose: a Run can outlive its archive if the archive gets
+  /// deleted while keeping the run's lightweight stats.
+  archive        RunArchive?
+}
+
+/// A Pokemon the player has actually seen during this run, the public,
+/// non-spoiler data source for the live dashboard. Only ever records what
+/// has been directly observed in-game (species encountered, moves actually
+/// seen used in battle), never anything pulled from the archive (no future
+/// evolutions, no un-seen moves, no un-triggered encounters).
+model Encounter {
+  id          String   @id @default(cuid())
+  runId       String
+  run         Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+  species     String
+  /// Grows over time as more moves are observed in battle, the API layer
+  /// is expected to append to this array rather than replace it.
+  knownMoves  String[]
+  /// Set once, when the row is first created, and never touched again —
+  /// same lifecycle as firstSeenAt. If the same species turns up again
+  /// later under a different context (e.g. first seen wild, later fielded
+  /// by a trainer), that later sighting doesn't overwrite this: tracking
+  /// every context a species has appeared under would need a full
+  /// per-sighting history instead of this one-row-per-species summary.
+  context     EncounterContext?
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+
+  /// One row per species per run: re-encountering the same species updates
+  /// this row (new moves seen, lastSeenAt bumped) instead of creating a
+  /// duplicate.
+  @@unique([runId, species])
+}
+
+/// An item the player has actually picked up during this run — same
+/// "observed only" principle as Encounter.
+model InventoryItem {
+  id         String   @id @default(cuid())
+  runId      String
+  run        Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+  itemName   String
+  quantity   Int      @default(1)
+  obtainedAt DateTime @default(now())
+}
+
+/// The full rulebreaking data for a run: the entire parsed randomizer log
+/// (see `ParsedRandomizerLog` in randomizer-log-schema.ts), stored as a
+/// single JSON blob rather than normalized into a dozen extra tables
+/// mirroring every section of the log (evolutions, movesets, TM
+/// compatibility, trainers, wild encounters...). This data is written once,
+/// when the run ends, and always read back as a whole, never queried
+/// piecemeal, so a JSON column is a better fit here than a pile of
+/// relational tables that would only ever be joined back together anyway.
+///
+/// Deleting this row (without touching the parent Run) is exactly the
+/// "supprimer l'archive mais garder le tracking de performance" behavior
+/// from the original spec: the Run and its stats survive, only the
+/// spoiler-heavy payload disappears.
+model RunArchive {
+  id        String   @id @default(cuid())
+  runId     String   @unique
+  run       Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+  /// Matches the shape of `ParsedRandomizerLog` (randomizer-log-schema.ts).
+  /// Not enforced at the database level — validate against that TypeScript
+  /// type in the API layer before writing.
+  data      Json
+  createdAt DateTime @default(now())
+}

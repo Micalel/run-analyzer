@@ -1,0 +1,64 @@
+@use '../styles/variables' as vars;
+
+.run-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: vars.$spacing-lg;
+
+  &__panel {
+    flex: 1 1 240px;
+  }
+
+  &__panel-title {
+    color: vars.$color-red;
+    font-size: 1rem;
+    border-bottom: 2px solid vars.$color-yellow;
+    padding-bottom: vars.$spacing-xs;
+  }
+
+  &__empty {
+    color: vars.$color-text-muted;
+    font-style: italic;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: vars.$spacing-xs;
+  }
+
+  &__list-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: vars.$spacing-sm;
+    align-items: baseline;
+    padding: vars.$spacing-sm;
+    border: 1px solid vars.$color-border;
+    border-radius: vars.$radius;
+  }
+
+  &__species {
+    font-weight: 600;
+  }
+
+  &__context {
+    color: vars.$color-blue;
+    font-size: 0.85rem;
+  }
+
+  &__moves {
+    color: vars.$color-text-muted;
+    font-size: 0.85rem;
+  }
+
+  &__item-name {
+    font-weight: 600;
+  }
+
+  &__item-quantity {
+    color: vars.$color-text-muted;
+  }
+}

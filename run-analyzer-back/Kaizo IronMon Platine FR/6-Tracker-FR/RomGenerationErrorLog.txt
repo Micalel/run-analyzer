@@ -1,0 +1,3 @@
+WARNING: This settings file was created by an older randomizer version.
+The randomizer will attempt to open it anyway, but you should look out for new options added since you made it.
+To prevent this message from appearing every time you load this settings file, re-save your settings file.

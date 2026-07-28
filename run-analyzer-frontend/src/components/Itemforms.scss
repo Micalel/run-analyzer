@@ -1,0 +1,65 @@
+@use '../styles/variables' as vars;
+
+.item-form {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-md;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$spacing-xs;
+  }
+
+  &__label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: vars.$color-text-muted;
+  }
+
+  &__input {
+    padding: vars.$spacing-sm;
+    border: 1px solid vars.$color-border;
+    border-radius: vars.$radius;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: vars.$color-blue;
+    }
+
+    &:disabled {
+      background: vars.$color-background;
+      color: vars.$color-text-muted;
+    }
+  }
+
+  &__error {
+    color: vars.$color-error;
+    background: vars.$color-error-background;
+    border-radius: vars.$radius;
+    padding: vars.$spacing-sm;
+    margin: 0;
+  }
+
+  &__submit {
+    align-self: flex-start;
+    padding: vars.$spacing-sm vars.$spacing-lg;
+    border: none;
+    border-radius: vars.$radius;
+    background: vars.$color-red;
+    color: vars.$color-surface;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: vars.$color-red-dark;
+    }
+
+    &:disabled {
+      background: vars.$color-border;
+      color: vars.$color-text-muted;
+      cursor: not-allowed;
+    }
+  }
+}

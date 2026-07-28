@@ -1,0 +1,24 @@
+// Shared design tokens, including colors, spacing, and typography, for the Run Analyzer frontend application.
+
+$color-red: #ee1515;
+$color-red-dark: #b71c1c;
+$color-blue: #2a75bb;
+$color-yellow: #ffcb05;
+
+$color-text: #24242a;
+$color-text-muted: #6b6b76;
+$color-background: #faf8f2;
+$color-surface: #ffffff;
+$color-border: #ddd6c4;
+
+$color-error: #b71c1c;
+$color-error-background: #fdecea;
+
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2.5rem;
+
+$radius: 8px;
+$font-stack: 'Segoe UI', system-ui, sans-serif;

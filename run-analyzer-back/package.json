@@ -1,0 +1,28 @@
+{
+  "name": "ironmon-log-parser",
+  "private": true,
+  "type": "module",
+  "description": "Parser for Universal Pokemon Randomizer log files (Ironmon companion project).",
+  "scripts": {
+    "parse": "node --experimental-strip-types randomizer-log-parser.ts",
+    "dev": "node --experimental-strip-types server.ts",
+    "prisma:validate": "prisma validate",
+    "prisma:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.0.0",
+    "@prisma/adapter-pg": "^7.0.0",
+    "pg": "^8.13.0",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/express": "^4.17.21",
+    "@types/pg": "^8.11.0",
+    "@types/cors": "^2.8.17",
+    "typescript": "^5.7.0",
+    "prisma": "^7.0.0"
+  }
+}

@@ -1,0 +1,48 @@
+@use './styles/variables' as vars;
+
+body {
+  margin: 0;
+  background: vars.$color-background;
+}
+
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: vars.$spacing-xl vars.$spacing-md;
+  font-family: vars.$font-stack;
+  color: vars.$color-text;
+  background: vars.$color-background;
+
+  &__title {
+    color: vars.$color-red;
+    border-bottom: 4px solid vars.$color-yellow;
+    padding-bottom: vars.$spacing-sm;
+    margin-bottom: vars.$spacing-lg;
+  }
+
+  &__section {
+    background: vars.$color-surface;
+    border: 1px solid vars.$color-border;
+    border-radius: vars.$radius;
+    padding: vars.$spacing-md;
+    margin-bottom: vars.$spacing-lg;
+
+    &-title {
+      margin-top: 0;
+      color: vars.$color-blue;
+      font-size: 1.1rem;
+    }
+  }
+
+  &__error {
+    color: vars.$color-error;
+    background: vars.$color-error-background;
+    border-radius: vars.$radius;
+    padding: vars.$spacing-sm vars.$spacing-md;
+  }
+
+  &__run-ended {
+    color: vars.$color-text-muted;
+    font-style: italic;
+  }
+}

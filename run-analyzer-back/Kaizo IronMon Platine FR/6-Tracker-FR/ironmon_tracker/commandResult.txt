@@ -1,0 +1,10 @@
+- encoding 'arm9.bin' (memory) - done, time=1527ms
+- encoding 'overlay 36' (memory) - done, time=847ms
+- encoding 'overlay 162' (memory) - done, time=47ms
+- encoding 'overlay 166' (memory) - done, time=2ms
+- encoding 'overlay 167' (memory) - done, time=609ms
+- encoding 'overlay 168' (memory) - done, time=235ms
+- encoding 'overlay 284' (memory) - done, time=50ms
+- encoding 'overlay 294' (memory) - done, time=28ms
+- encoding 'overlay 316' (memory) - done, time=29ms
+Randomized successfully!

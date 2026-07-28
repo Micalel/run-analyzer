@@ -1,0 +1,26 @@
+# Not part of the code project, the tracker/emulator/ROM tooling folder.
+# Adjust this name if it doesn't match exactly.
+Kaizo IronMon Platine FR/
+ 
+# Dependencies, matches node_modules anywhere in the tree, so this covers
+# both run-analyzer-back/node_modules and run-analyzer-frontend/node_modules
+# with a single line.
+node_modules/
+ 
+# Environment variables, contains the Postgres connection string and
+# Supabase keys, must never be committed. Same story: matches .env in
+# either sub-project.
+.env
+.env.local
+.env.*.local
+ 
+# Logs
+logs
+*.log
+npm-debug.log*
+ 
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store

@@ -1,0 +1,1 @@
+crashedOccurred:false|gameName:BlackWhite2 Kaizo Auto Randomized|romHash:B46692414505590D16CBD02EED110F3E0818710E
