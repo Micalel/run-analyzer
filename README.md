@@ -7,7 +7,7 @@ A companion web app for the Pokémon Ironmon challenge (a roguelike-style run wh
 
 The app tracks a run in two tiers:
 
-Live data (current species encountered, their known moves, items picked up) — safe to show while the run is still active, since it only ever reflects what's actually been observed in-game. No spoilers.
+Live data (current species encountered, their known moves, items picked up), safe to show while the run is still active, since it only ever reflects what's actually been observed in-game. No spoilers.
 Archive data (the full randomizer log: evolutions, movesets, TM/HM compatibility, trainers, wild encounters, static encounters, trades, pickup tables) — stored the moment a run starts, but only readable once the run has ended. Deletable independently of the run itself, so you can throw away the spoilers while keeping lightweight stats (seed, starter, duration, cause of death) for cross-run tracking.
 
 
